@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Garage Solutions Quote Calculator</title>
+
+<style>
+
+    * {
+
+        box-sizing: border-box;
+
+    }
+
+    body {
+
+        margin: 0;
+
+        font-family: Arial, Helvetica, sans-serif;
+
+        background: #f3f4f6;
+
+        color: #111827;
+
+    }
+
+    .container {
+
+        max-width: 1100px;
+
+        margin: auto;
+
+        padding: 20px;
+
+    }
+
+    h1 {
+
+        margin: 0 0 5px;
+
+        font-size: 30px;
+
+    }
+
+    h2 {
+
+        margin-top: 0;
+
+        font-size: 21px;
+
+    }
+
+    .subtitle {
+
+        color: #6b7280;
+
+        margin-bottom: 20px;
+
+    }
+
+    .card {
+
+        background: white;
+
+        border-radius: 12px;
+
+        padding: 20px;
+
+        margin-bottom: 18px;
+
+        box-shadow: 0 2px 8px rgba(0,0,0,.08);
+
+    }
+
+    .grid {
+
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 15px;
+
+    }
+
+    .field label {
+
+        display: block;
+
+        font-weight: bold;
+
+        margin-bottom: 6px;
+
+    }
+
+    input, select {
+
+        width: 100%;
+
+        padding: 12px;
+
+        font-size: 16px;
+
+        border: 1px solid #d1d5db;
+
+        border-radius: 7px;
+
+        background: white;
+
+    }
+
+    .section-title {
+
+        margin-top: 25px;
+
+        margin-bottom: 10px;
+
+        font-size: 18px;
+
+        font-weight: bold;
+
+        border-bottom: 2px solid #e5e7eb;
+
+        padding-bottom: 7px;
+
+    }
+
+    .solution {
+
+        display: grid;
+
+        grid-template-columns: 1fr 90px 100px;
+
+        gap: 10px;
+
+        align-items: center;
+
+        padding: 10px 0;
+
+        border-bottom: 1px solid #eee;
+
+    }
+
+    .solution:last-child {
+
+        border-bottom: none;
+
+    }
+
+    .solution-name {
+
+        font-weight: 600;
+
+    }
+
+    .solution-price {
+
+        color: #6b7280;
+
+        font-size: 14px;
+
+    }
+
+    .qty {
+
+        text-align: center;
+
+    }
+
+    .line-total {
+
+        text-align: right;
+
+        font-weight: bold;
+
+    }
+
+    .summary {
+
+        background: #111827;
+
+        color: white;
+
+        border-radius: 12px;
+
+        padding: 20px;
+
+    }
+
+    .summary-row {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        gap: 15px;
+
+        padding: 7px 0;
+
+    }
+
+    .summary-row.total {
+
+        font-size: 24px;
+
+        font-weight: bold;
+
+        border-top: 1px solid #4b5563;
+
+        margin-top: 10px;
+
+        padding-top: 15px;
+
+    }
+
+    .profit {
+
+        background: #ecfdf5;
+
+        border: 1px solid #a7f3d0;
+
+        color: #065f46;
+
+        border-radius: 12px;
+
+        padding: 20px;
+
+        margin-top: 18px;
+
+    }
+
+    .profit-row {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        padding: 6px 0;
+
+    }
+
+    .profit-big {
+
+        font-size: 25px;
+
+        font-weight: bold;
+
+        border-top: 1px solid #a7f3d0;
+
+        margin-top: 10px;
+
+        padding-top: 12px;
+
+    }
+
+    .buttons {
+
+        display: flex;
+
+        gap: 10px;
+
+        margin-top: 20px;
+
+        flex-wrap: wrap;
+
+    }
+
+    button {
+
+        border: none;
+
+        border-radius: 8px;
+
+        padding: 13px 20px;
+
+        font-size: 16px;
+
+        font-weight: bold;
+
+        cursor: pointer;
+
+    }
+
+    .primary {
+
+        background: #111827;
+
+        color: white;
+
+    }
+
+    .secondary {
+
+        background: #e5e7eb;
+
+        color: #111827;
+
+    }
+
+    .danger {
+
+        background: #fee2e2;
+
+        color: #991b1b;
+
+    }
+
+    .note {
+
+        color: #6b7280;
+
+        font-size: 13px;
+
+        margin-top: 7px;
+
+    }
+
+    .customer-quote {
+
+        background: white;
+
+        border: 1px solid #d1d5db;
+
+        padding: 25px;
+
+        margin-top: 20px;
+
+        border-radius: 10px;
+
+    }
+
+    .quote-header {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        gap: 20px;
+
+        border-bottom: 2px solid #111827;
+
+        padding-bottom: 15px;
+
+        margin-bottom: 15px;
+
+    }
+
+    .quote-business {
+
+        font-size: 23px;
+
+        font-weight: bold;
+
+    }
+
+    .quote-number {
+
+        text-align: right;
+
+        color: #4b5563;
+
+    }
+
+    .quote-line {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        gap: 15px;
+
+        padding: 7px 0;
+
+        border-bottom: 1px solid #eee;
+
+    }
+
+    .quote-total {
+
+        font-size: 24px;
+
+        font-weight: bold;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        padding-top: 15px;
+
+    }
+
+    .checkbox-row {
+
+        display: flex;
+
+        gap: 10px;
+
+        align-items: center;
+
+        margin-top: 12px;
+
+    }
+
+    .checkbox-row input {
+
+        width: auto;
+
+    }
+
+    @media (max-width: 700px) {
+
+        .grid {
+
+            grid-template-columns: 1fr;
+
+        }
+
+        .solution {
+
+            grid-template-columns: 1fr 80px 90px;
+
+        }
+
+        .quote-header {
+
+            flex-direction: column;
+
+        }
+
+        .quote-number {
+
+            text-align: left;
+
+        }
+
+    }
+
+    @media print {
+
+        body {
+
+            background: white;
+
+        }
+
+        .no-print {
+
+            display: none !important;
+
+        }
+
+        .customer-quote {
+
+            border: none;
+
+            box-shadow: none;
+
+        }
+
+        .container {
+
+            max-width: none;
+
+        }
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Garage Solutions Quote Calculator</h1>
+
+    <div class="subtitle">
+
+        Organization • Installation • Storage • Junk Removal
+
+    </div>
+
+    <!-- CUSTOMER INFO -->
+
+    <div class="card">
+
+        <h2>Customer Information</h2>
+
+        <div class="grid">
+
+            <div class="field">
+
+                <label>Customer Name</label>
+
+                <input id="customerName" type="text" placeholder="Customer name">
+
+            </div>
+
+            <div class="field">
+
+                <label>Quote / Invoice #</label>
+
+                <input id="quoteNumber" type="text" placeholder="Example: 1001">
+
+            </div>
+
+            <div class="field">
+
+                <label>Date</label>
+
+                <input id="quoteDate" type="date">
+
+            </div>
+
+            <div class="field">
+
+                <label>Payment Method</label>
+
+                <select id="paymentMethod">
+
+                    <option>Cash</option>
+
+                    <option>Check</option>
+
+                    <option>Card</option>
+
+                    <option>Other</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MOBILIZATION -->
+
+    <div class="card">
+
+        <h2>Trip / Mobilization</h2>
+
+        <div class="grid">
+
+            <div class="field">
+
+                <label>Vehicle</label>
+
+                <select id="vehicle">
+
+                    <option value="60">Vehicle Only — $60</option>
+
+                    <option value="80">Vehicle + Trailer — $80</option>
+
+                </select>
+
+            </div>
+
+            <div class="field">
+
+                <label>One-Way Distance (miles)</label>
+
+                <input id="distance" type="number" min="0" step="1" value="0">
+
+            </div>
+
+        </div>
+
+        <div class="note">
+
+            Customer mobilization is $60 vehicle-only or $80 with trailer.
+
+            Distance is used internally to estimate fuel cost.
+
+        </div>
+
+    </div>
+
+    <!-- LABOR -->
+
+    <div class="card">
+
+        <h2>Labor</h2>
+
+        <div class="grid">
+
+            <div class="field">
+
+                <label>Organization Hours</label>
+
+                <input id="organizationHours" type="number" min="0" step="0.5" value="0">
+
+            </div>
+
+            <div class="field">
+
+                <label>Installation Hours</label>
+
+                <input id="installationHours" type="number" min="0" step="0.5" value="0">
+
+            </div>
+
+            <div class="field">
+
+                <label>Loading / Junk Removal Hours</label>
+
+                <input id="loadingHours" type="number" min="0" step="0.5" value="0">
+
+            </div>
+
+        </div>
+
+        <div class="note">
+
+            Two-person crew: $50/hour combined. 2-hour minimum labor = $100.
+
+        </div>
+
+    </div>
+
+    <!-- SOLUTIONS -->
+
+    <div class="card">
+
+        <h2>Solutions</h2>
+
+        <div class="note">
+
+            Select the quantity of each solution. Prices include the solution and normal installation.
+
+        </div>
+
+        <div class="section-title">Small Organization</div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">27-Gal Storage Tote</div>
+
+                <div class="solution-price">$20 each</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="27-Gal Storage Tote" data-price="20" data-cost="8.98" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-tote">$0</div>
+
+        </div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">Jumbo Bike / Utility Hook</div>
+
+                <div class="solution-price">$20 each</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="Jumbo Bike / Utility Hook" data-price="20" data-cost="1.99" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-bikehook">$0</div>
+
+        </div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">V-Shape Hang-All</div>
+
+                <div class="solution-price">$20 each</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="V-Shape Hang-All" data-price="20" data-cost="3" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-vhook">$0</div>
+
+        </div>
+
+        <div class="section-title">Wall Organization</div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">65" Wall-Mount Tool Organizer</div>
+
+                <div class="solution-price">$50 installed</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="65in Wall-Mount Tool Organizer" data-price="50" data-cost="30" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-toolorg">$0</div>
+
+        </div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">30-Piece Wall Storage Bin Organizer</div>
+
+                <div class="solution-price">$50 installed</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="30-Piece Wall Storage Bin Organizer" data-price="50" data-cost="50" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-bins">$0</div>
+
+        </div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">48" × 32" Metal Pegboard Tool Wall</div>
+
+                <div class="solution-price">$160 installed</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="48x32 Metal Pegboard Tool Wall" data-price="160" data-cost="120.04" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-pegboard">$0</div>
+
+        </div>
+
+        <div class="section-title">Shelving / Storage</div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">Wall-Mounted Tire Storage Rack</div>
+
+                <div class="solution-price">$80 installed</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="Wall-Mounted Tire Storage Rack" data-price="80" data-cost="42" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-tirerack">$0</div>
+
+        </div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">Standard 5-Tier Shelf</div>
+
+                <div class="solution-price">$100 installed</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="Standard 5-Tier Shelf" data-price="100" data-cost="60" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-standard-shelf">$0</div>
+
+        </div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">Overhead Garage Storage Rack</div>
+
+                <div class="solution-price">$100 installed</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="Overhead Garage Storage Rack" data-price="100" data-cost="60" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-overhead">$0</div>
+
+        </div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">Hanging Tool Cabinet</div>
+
+                <div class="solution-price">$150 installed</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="Hanging Tool Cabinet" data-price="150" data-cost="100" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-cabinet">$0</div>
+
+        </div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">Heavy-Duty 5-Tier Steel Shelf</div>
+
+                <div class="solution-price">$200 installed</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="Heavy-Duty 5-Tier Steel Shelf" data-price="200" data-cost="140" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-heavy-shelf">$0</div>
+
+        </div>
+
+        <div class="solution">
+
+            <div>
+
+                <div class="solution-name">10-Tote Metal Storage Rack</div>
+
+                <div class="solution-price">$220 installed</div>
+
+            </div>
+
+            <input class="qty solution-input" data-name="10-Tote Metal Storage Rack" data-price="220" data-cost="159" type="number" min="0" value="0">
+
+            <div class="line-total" id="total-toterack">$0</div>
+
+        </div>
+
+    </div>
+
+    <!-- JUNK REMOVAL -->
+
+    <div class="card">
+
+        <h2>Junk Removal</h2>
+
+        <div class="checkbox-row">
+
+            <input id="dumpRun" type="checkbox">
+
+            <label for="dumpRun">
+
+                Standard Dump Run — <strong>$100</strong>
+
+            </label>
+
+        </div>
+
+        <div class="note">
+
+            Standard dump run is priced flat up to approximately 1 ton / 2,000 lb.
+
+            Special disposal items may require an additional charge.
+
+        </div>
+
+        <div class="section-title">Special Disposal</div>
+
+        <div class="checkbox-row">
+
+            <input id="mattress" type="checkbox">
+
+            <label for="mattress">Mattress</label>
+
+        </div>
+
+        <div class="checkbox-row">
+
+            <input id="boxspring" type="checkbox">
+
+            <label for="boxspring">Box Spring</label>
+
+        </div>
+
+        <div class="checkbox-row">
+
+            <input id="tires" type="checkbox">
+
+            <label for="tires">Tires</label>
+
+        </div>
+
+        <div class="checkbox-row">
+
+            <input id="appliance" type="checkbox">
+
+            <label for="appliance">Refrigerator / Freezer / Appliance</label>
+
+        </div>
+
+        <div class="checkbox-row">
+
+            <input id="electronics" type="checkbox">
+
+            <label for="electronics">TV / Electronics</label>
+
+        </div>
+
+        <div class="note">
+
+            Special disposal pricing is intentionally not hard-coded yet because
+
+            disposal facilities charge different fees.
+
+        </div>
+
+    </div>
+
+    <!-- CUSTOMER SUMMARY -->
+
+    <div class="summary">
+
+        <h2>Customer Price</h2>
+
+        <div class="summary-row">
+
+            <span>Mobilization</span>
+
+            <strong id="mobilizationDisplay">$60</strong>
+
+        </div>
+
+        <div class="summary-row">
+
+            <span>Labor</span>
+
+            <strong id="laborDisplay">$100</strong>
+
+        </div>
+
+        <div class="summary-row">
+
+            <span>Solutions</span>
+
+            <strong id="solutionsDisplay">$0</strong>
+
+        </div>
+
+        <div class="summary-row">
+
+            <span>Dump Run</span>
+
+            <strong id="dumpDisplay">$0</strong>
+
+        </div>
+
+        <div class="summary-row total">
+
+            <span>Customer Total</span>
+
+            <strong id="customerTotal">$160</strong>
+
+        </div>
+
+    </div>
+
+    <!-- INTERNAL BUSINESS COST -->
+
+    <div class="profit no-print">
+
+        <h2>Internal Business Numbers</h2>
+
+        <div class="profit-row">
+
+            <span>Customer Revenue</span>
+
+            <strong id="internalRevenue">$160</strong>
+
+        </div>
+
+        <div class="profit-row">
+
+            <span>Actual Labor Cost</span>
+
+            <strong id="laborCost">$100</strong>
+
+        </div>
+
+        <div class="profit-row">
+
+            <span>Estimated Fuel Cost</span>
+
+            <strong id="fuelCost">$0</strong>
+
+        </div>
+
+        <div class="profit-row">
+
+            <span>Solution Material Cost</span>
+
+            <strong id="materialCost">$0</strong>
+
+        </div>
+
+        <div class="profit-row">
+
+            <span>Estimated Dump Cost</span>
+
+            <strong id="dumpCost">$0</strong>
+
+        </div>
+
+        <div class="profit-row profit-big">
+
+            <span>Estimated Profit</span>
+
+            <strong id="estimatedProfit">$60</strong>
+
+        </div>
+
+        <div class="profit-row">
+
+            <span>Effective Profit / Crew Hour</span>
+
+            <strong id="hourlyProfit">$30.00</strong>
+
+        </div>
+
+        <div class="note">
+
+            Internal assumptions: two-person crew at $25/hour each,
+
+            Jeep approximately 18 MPG without trailer and 15 MPG with trailer,
+
+            fuel estimated at $4/gallon.
+
+        </div>
+
+    </div>
+
+    <!-- CUSTOMER QUOTE -->
+
+    <div class="customer-quote" id="customerQuote">
+
+        <div class="quote-header">
+
+            <div>
+
+                <div class="quote-business">
+
+                    Garage Solutions
+
+                </div>
+
+                <div>
+
+                    Dysfunctional Garage? We Fix That.
+
+                </div>
+
+            </div>
+
+            <div class="quote-number">
+
+                <div><strong>QUOTE / INVOICE</strong></div>
+
+                <div id="quoteNumberDisplay">#1001</div>
+
+                <div id="quoteDateDisplay"></div>
+
+            </div>
+
+        </div>
+
+        <div>
+
+            <strong>Customer:</strong>
+
+            <span id="customerNameDisplay">Customer</span>
+
+        </div>
+
+        <br>
+
+        <div id="quoteLines"></div>
+
+        <div class="quote-total">
+
+            <span>Total</span>
+
+            <span id="quoteTotalDisplay">$160</span>
+
+        </div>
+
+        <p class="note">
+
+            Thank you for choosing Garage Solutions.
+
+        </p>
+
+    </div>
+
+    <!-- BUTTONS -->
+
+    <div class="buttons no-print">
+
+        <button class="primary" onclick="window.print()">
+
+            Print / Save Quote
+
+        </button>
+
+        <button class="secondary" onclick="resetCalculator()">
+
+            Reset Calculator
+
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const inputs = document.querySelectorAll(".solution-input");
+
+const quoteDate = document.getElementById("quoteDate");
+
+const today = new Date();
+
+quoteDate.value = today.toISOString().split("T")[0];
+
+function money(value) {
+
+    return "$" + Number(value).toFixed(2);
+
+}
+
+function numberValue(id) {
+
+    const value = parseFloat(document.getElementById(id).value);
+
+    return Number.isFinite(value) && value >= 0 ? value : 0;
+
+}
+
+function calculate() {
+
+    const vehiclePrice =
+
+        parseFloat(document.getElementById("vehicle").value) || 60;
+
+    const distance =
+
+        numberValue("distance");
+
+    const organizationHours =
+
+        numberValue("organizationHours");
+
+    const installationHours =
+
+        numberValue("installationHours");
+
+    const loadingHours =
+
+        numberValue("loadingHours");
+
+    const actualHours =
+
+        organizationHours +
+
+        installationHours +
+
+        loadingHours;
+
+    /*
+
+        Two-person crew.
+
+        $25/person/hour = $50/hour combined.
+
+        Minimum = 2 hours.
+
+    */
+
+    const billableHours =
+
+        Math.max(2, actualHours);
+
+    const laborPrice =
+
+        billableHours * 50;
+
+    /*
+
+        Solutions
+
+    */
+
+    let solutionRevenue = 0;
+
+    let materialCost = 0;
+
+    const quoteLines = [];
+
+    inputs.forEach(input => {
+
+        const quantity =
+
+            Math.max(0, parseInt(input.value) || 0);
+
+        const price =
+
+            parseFloat(input.dataset.price);
+
+        const cost =
+
+            parseFloat(input.dataset.cost);
+
+        const name =
+
+            input.dataset.name;
+
+        const total =
+
+            quantity * price;
+
+        const costTotal =
+
+            quantity * cost;
+
+        solutionRevenue += total;
+
+        materialCost += costTotal;
+
+        if (quantity > 0) {
+
+            quoteLines.push({
+
+                name: name,
+
+                quantity: quantity,
+
+                total: total
+
+            });
+
+        }
+
+        /*
+
+            Update individual visible line totals.
+
+        */
+
+        const row = input.closest(".solution");
+
+        const totalElement = row.querySelector(".line-total");
+
+        totalElement.textContent = money(total);
+
+    });
+
+    /*
+
+        Dump run
+
+    */
+
+    const dumpRun =
+
+        document.getElementById("dumpRun").checked;
+
+    const dumpPrice =
+
+        dumpRun ? 100 : 0;
+
+    /*
+
+        Fuel
+
+        Distance is entered one-way.
+
+        We calculate round trip internally.
+
+    */
+
+    const roundTripMiles =
+
+        distance * 2;
+
+    const mpg =
+
+        vehiclePrice === 80 ? 15 : 18;
+
+    const fuelPrice =
+
+        4;
+
+    const gallons =
+
+        mpg > 0 ? roundTripMiles / mpg : 0;
+
+    const fuelCost =
+
+        gallons * fuelPrice;
+
+    /*
+
+        Internal labor cost
+
+        Same $50/hour because this is the
+
+        actual two-person labor assumption.
+
+    */
+
+    const laborCost =
+
+        billableHours * 50;
+
+    /*
+
+        Placeholder dump cost.
+
+        Until you enter actual dump pricing,
+
+        we estimate $50 internal cost for a
+
+        standard $100 dump run.
+
+    */
+
+    const estimatedDumpCost =
+
+        dumpRun ? 50 : 0;
+
+    /*
+
+        Customer total
+
+    */
+
+    const customerTotal =
+
+        vehiclePrice +
+
+        laborPrice +
+
+        solutionRevenue +
+
+        dumpPrice;
+
+    /*
+
+        Internal profit
+
+    */
+
+    const totalInternalCost =
+
+        laborCost +
+
+        fuelCost +
+
+        materialCost +
+
+        estimatedDumpCost;
+
+    const estimatedProfit =
+
+        customerTotal -
+
+        totalInternalCost;
+
+    const effectiveHourlyProfit =
+
+        billableHours > 0
+
+            ? estimatedProfit / billableHours
+
+            : 0;
+
+    /*
+
+        Update customer summary
+
+    */
+
+    document.getElementById("mobilizationDisplay")
+
+        .textContent = money(vehiclePrice);
+
+    document.getElementById("laborDisplay")
+
+        .textContent = money(laborPrice);
+
+    document.getElementById("solutionsDisplay")
+
+        .textContent = money(solutionRevenue);
+
+    document.getElementById("dumpDisplay")
+
+        .textContent = money(dumpPrice);
+
+    document.getElementById("customerTotal")
+
+        .textContent = money(customerTotal);
+
+    /*
+
+        Update internal numbers
+
+    */
+
+    document.getElementById("internalRevenue")
+
+        .textContent = money(customerTotal);
+
+    document.getElementById("laborCost")
+
+        .textContent = money(laborCost);
+
+    document.getElementById("fuelCost")
+
+        .textContent = money(fuelCost);
+
+    document.getElementById("materialCost")
+
+        .textContent = money(materialCost);
+
+    document.getElementById("dumpCost")
+
+        .textContent = money(estimatedDumpCost);
+
+    document.getElementById("estimatedProfit")
+
+        .textContent = money(estimatedProfit);
+
+    document.getElementById("hourlyProfit")
+
+        .textContent = money(effectiveHourlyProfit);
+
+    /*
+
+        Customer quote
+
+    */
+
+    const customerName =
+
+        document.getElementById("customerName").value.trim()
+
+        || "Customer";
+
+    const quoteNumber =
+
+        document.getElementById("quoteNumber").value.trim()
+
+        || "1001";
+
+    const dateValue =
+
+        document.getElementById("quoteDate").value;
+
+    let formattedDate = "";
+
+    if (dateValue) {
+
+        const parts = dateValue.split("-");
+
+        formattedDate =
+
+            `${parts[1]}/${parts[2]}/${parts[0]}`;
+
+    }
+
+    document.getElementById("customerNameDisplay")
+
+        .textContent = customerName;
+
+    document.getElementById("quoteNumberDisplay")
+
+        .textContent = "#" + quoteNumber;
+
+    document.getElementById("quoteDateDisplay")
+
+        .textContent = formattedDate;
+
+    /*
+
+        Build quote line items
+
+    */
+
+    const quoteContainer =
+
+        document.getElementById("quoteLines");
+
+    quoteContainer.innerHTML = "";
+
+    /*
+
+        Mobilization
+
+    */
+
+    addQuoteLine(
+
+        "Mobilization",
+
+        vehiclePrice
+
+    );
+
+    /*
+
+        Labor
+
+    */
+
+    addQuoteLine(
+
+        `Labor (${billableHours} crew hours)`,
+
+        laborPrice
+
+    );
+
+    /*
+
+        Solutions
+
+    */
+
+    quoteLines.forEach(line => {
+
+        addQuoteLine(
+
+            `${line.name} × ${line.quantity}`,
+
+            line.total
+
+        );
+
+    });
+
+    /*
+
+        Dump
+
+    */
+
+    if (dumpRun) {
+
+        addQuoteLine(
+
+            "Standard Dump Run",
+
+            dumpPrice
+
+        );
+
+    }
+
+    document.getElementById("quoteTotalDisplay")
+
+        .textContent = money(customerTotal);
+
+}
+
+function addQuoteLine(name, price) {
+
+    const container =
+
+        document.getElementById("quoteLines");
+
+    const row =
+
+        document.createElement("div");
+
+    row.className = "quote-line";
+
+    row.innerHTML = `
+
+        <span>${name}</span>
+
+        <strong>${money(price)}</strong>
+
+    `;
+
+    container.appendChild(row);
+
+}
+
+function resetCalculator() {
+
+    document.getElementById("customerName").value = "";
+
+    document.getElementById("quoteNumber").value = "";
+
+    document.getElementById("distance").value = "0";
+
+    document.getElementById("organizationHours").value = "0";
+
+    document.getElementById("installationHours").value = "0";
+
+    document.getElementById("loadingHours").value = "0";
+
+    document.getElementById("vehicle").value = "60";
+
+    document.getElementById("paymentMethod").value = "Cash";
+
+    document.getElementById("dumpRun").checked = false;
+
+    document.getElementById("mattress").checked = false;
+
+    document.getElementById("boxspring").checked = false;
+
+    document.getElementById("tires").checked = false;
+
+    document.getElementById("appliance").checked = false;
+
+    document.getElementById("electronics").checked = false;
+
+    inputs.forEach(input => {
+
+        input.value = "0";
+
+    });
+
+    calculate();
+
+}
+
+document.querySelectorAll("input, select").forEach(element => {
+
+    element.addEventListener("input", calculate);
+
+    element.addEventListener("change", calculate);
+
+});
+
+calculate();
+
+</script>
+
+</body>
+
+</html>
